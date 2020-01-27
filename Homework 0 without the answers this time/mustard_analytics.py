@@ -42,8 +42,8 @@ def read_data(file_name):
 def hasMissing(row: list):
     for item in row:
         if item == '':
-            return False
-    return True
+            return True
+    return False
 
 def getDate(date: str):
     d = date.split('/')
@@ -53,6 +53,12 @@ def getDate(date: str):
 
 def getMilage(miles: str):
     return int(miles)
+
+def getGallons(gallons: str):
+    return int(gallons)
+
+def getPrice(price: str):
+    return int(price[1:])
 # Exercise 1. (5 points)
 #
 def total_cost(rows):
