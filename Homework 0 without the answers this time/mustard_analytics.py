@@ -41,7 +41,7 @@ def getDate(date :str):
     d = date.split('/')
     m = date.split('/')
     y = date.split('/')
-    return newDate = datetime.date(y, m, d)
+    return datetime.date(y, m, d)
 
 def get
 # Exercise 1. (5 points)
