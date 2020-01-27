@@ -33,7 +33,7 @@ def read_data(file_name):
             if hasMissing(row):
                 continue
             else:
-                rows.append(tuple(row))
+                rows.append(tuple(getDate(row[0]), getMilage(row[1]), row[2], getGallons(row[3]), getPrice(row[4])))
     return rows
 
 # Helper methods
@@ -59,6 +59,7 @@ def getGallons(gallons: str):
 
 def getPrice(price: str):
     return int(price[1:])
+
 # Exercise 1. (5 points)
 #
 def total_cost(rows):
