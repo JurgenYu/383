@@ -25,12 +25,25 @@ def read_data(file_name):
     functions, to receive full credit you must use Python's built in csv module.
     """
     rows = []
-    #
-    # fill in function body here
-    #
+    with open(file_name) as csvfile:
+        fp = csv.reader(csvfile)
+        for row in fp:
+            if fp.line_num == 1:
+                continue
+            else:
+                rows.append(tuple(row))
     return rows
 
+# Helper methods
+#
 
+def getDate(date :str):
+    d = date.split('/')
+    m = date.split('/')
+    y = date.split('/')
+    return newDate = datetime.date(y, m, d)
+
+def get
 # Exercise 1. (5 points)
 #
 def total_cost(rows):
