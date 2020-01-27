@@ -30,6 +30,8 @@ def read_data(file_name):
         for row in fp:
             if fp.line_num == 1:
                 continue
+            if hasMissing(row):
+                continue
             else:
                 rows.append(tuple(row))
     return rows
@@ -37,13 +39,20 @@ def read_data(file_name):
 # Helper methods
 #
 
-def getDate(date :str):
+def hasMissing(row: list):
+    for item in row:
+        if item == '':
+            return False
+    return True
+
+def getDate(date: str):
     d = date.split('/')
     m = date.split('/')
     y = date.split('/')
     return datetime.date(y, m, d)
 
-def get
+def getMilage(miles: str):
+    return int(miles)
 # Exercise 1. (5 points)
 #
 def total_cost(rows):
