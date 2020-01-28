@@ -33,7 +33,7 @@ def read_data(file_name):
             if hasMissing(row):
                 continue
             else:
-                rows.append(tuple(getDate(row[0]), getMilage(row[1]), row[2], getGallons(row[3]), getPrice(row[4])))
+                rows.append(tuple([getDate(row[0]), getMilage(row[1]), row[2], getGallons(row[3]), getPrice(row[4])]))
     return rows
 
 # Helper methods
@@ -46,38 +46,46 @@ def hasMissing(row: list):
     return False
 
 def getDate(date: str):
-    d = date.split('/')
-    m = date.split('/')
-    y = date.split('/')
-    return datetime.date(y, m, d)
+    dateList = date.split("/")
+    return datetime.date(int(dateList[2]), int(dateList[0]), int(dateList[1]))
 
 def getMilage(miles: str):
     return int(miles)
 
 def getGallons(gallons: str):
-    return int(gallons)
+    return float(gallons)
 
 def getPrice(price: str):
-    return int(price[1:])
+    return float(price[1:])
 
 # Exercise 1. (5 points)
 #
 def total_cost(rows):
     """Return the total amount of money spent on gas as a float.  Depressing."""
-    #
-    # fill in function body here
-    #
-    return 0.0  # fix this!
+    total = 0.0
+    for row in rows:
+        total += row[-1] * row[-2]
+    return total  # fix this!
 
 
 # Exercise 2. (5 points)
 #
 def num_single_locs(rows):
     """Return the number of refueling locations that were visited exactly once."""
-    #
-    # fill in function body here
-    #
-    return 0  # fix this!
+    locs = []
+    checked = []
+    conuts = 0
+    for row in rows:
+        if row[2] in locs:
+            if row[2] in checked:
+                continue
+            else:
+                checked.append(row[2])
+                conuts-=1
+        else:
+            locs.append(row[2])
+            conuts+=1
+    return conuts  # fix this!
 
 
 # Exercise 3. (8 points)
@@ -92,11 +100,19 @@ def most_common_locs(rows):
     tuples that can be sorted using Python's sorted() or sort() functions (the "Key Functions"
     section of https://docs.python.org/3.6/howto/sorting.html might be helpful).
     """
-    #
-    # fill in function body here
-    #
-    return []  # fix this!
-
+    locs_list = []
+    found = False
+    for row in rows:
+        for loc in locs_list:
+            if loc[0] == row[2]:
+                loc[1]+=1
+                found = True
+                break
+        if not found:
+            locs_list.append([row[2], 0])
+        found = False
+    locs_list.sort(key = lambda row:row[1], reverse=True)
+    return locs_list[:9]  # fix this!
 
 # Exercise 4. (8 points)
 #
@@ -110,10 +126,14 @@ def state_totals(rows):
           "HI" -> 19,
           etc. }
     """
-    #
-    # fill in function body here
-    #
-    return {}  # fix this!
+    state_dict = {}
+    for row in rows:
+        thisState = row[2][-2:]
+        if thisState in state_dict:
+            state_dict[thisState]+=1
+        else:
+            state_dict[thisState]=1
+    return state_dict  # fix this!
 
 
 # Exercise 5. (8 points)
@@ -122,10 +142,15 @@ def num_unique_dates(rows):
     """Return the total number unique dates in the calendar year that refueling took place.
     (This number should be less than 366!)
     """
-    #
-    # fill in function body here
-    #
-    return 0  # fix this!
+    date_list = []
+    counts = 0
+    for row in rows:
+        if [row[0].day, row[0].month] in date_list:
+            continue
+        else:
+            date_list.append([row[0].day, row[0].month])
+            counts+=1
+    return counts  # fix this!
 
 
 # Exercise 6. (8 points)
