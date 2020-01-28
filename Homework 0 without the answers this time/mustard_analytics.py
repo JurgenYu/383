@@ -65,7 +65,7 @@ def total_cost(rows):
     total = 0.0
     for row in rows:
         total += row[-1] * row[-2]
-    return total  # fix this!
+    return total
 
 
 # Exercise 2. (5 points)
@@ -85,7 +85,7 @@ def num_single_locs(rows):
         else:
             locs.append(row[2])
             conuts+=1
-    return conuts  # fix this!
+    return conuts
 
 
 # Exercise 3. (8 points)
@@ -112,7 +112,7 @@ def most_common_locs(rows):
             locs_list.append([row[2], 0])
         found = False
     locs_list.sort(key = lambda row:row[1], reverse=True)
-    return locs_list[:9]  # fix this!
+    return locs_list[:9]
 
 # Exercise 4. (8 points)
 #
@@ -133,7 +133,7 @@ def state_totals(rows):
             state_dict[thisState]+=1
         else:
             state_dict[thisState]=1
-    return state_dict  # fix this!
+    return state_dict
 
 
 # Exercise 5. (8 points)
@@ -150,7 +150,7 @@ def num_unique_dates(rows):
         else:
             date_list.append([row[0].day, row[0].month])
             counts+=1
-    return counts  # fix this!
+    return counts
 
 
 # Exercise 6. (8 points)
@@ -165,10 +165,19 @@ def month_avg_price(rows):
           "February" -> 2.89,
           ... }
     """
-    #
-    # fill in function body here
-    #
-    return {}  # fix this!
+    month_avg_dict = {}
+    dayCountsdict = {}
+    for row in rows:
+        month = row[0].strftime("%B")
+        if month in dayCountsdict:
+            dayCountsdict[month]+=1
+            month_avg_dict[month]+=row[-1]
+        else:
+            dayCountsdict[month] = 1
+            month_avg_dict[month]+=row[-1]
+    for each in month_avg_dict:
+        month_avg_dict[each]/=dayCountsdict[each]
+    return month_avg_dict  # fix this!
 
 
 # EXTRA CREDIT (+10 points)
