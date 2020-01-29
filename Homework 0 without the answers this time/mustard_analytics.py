@@ -79,10 +79,10 @@ def num_single_locs(rows):
         if row[2] in locs:
             if row[2] in checked:
                 continue
-            else:
+            elif len(row[2]) > 2:
                 checked.append(row[2])
                 conuts-=1
-        else:
+        elif len(row[2]) > 2:
             locs.append(row[2])
             conuts+=1
     return conuts
@@ -108,8 +108,8 @@ def most_common_locs(rows):
                 loc[1]+=1
                 found = True
                 break
-        if not found:
-            locs_list.append([row[2], 0])
+        if not found & len(row[2]) > 2:
+            locs_list.append([row[2], 1])
         found = False
     locs_list.sort(key = lambda row:row[1], reverse=True)
     return locs_list[:9]
@@ -136,7 +136,7 @@ def state_totals(rows):
     return state_dict
 
 
-# Exercise 5. (8 points)
+# Exercise 5. (8 points) //142
 #
 def num_unique_dates(rows):
     """Return the total number unique dates in the calendar year that refueling took place.
@@ -150,10 +150,11 @@ def num_unique_dates(rows):
         else:
             date_list.append([row[0].day, row[0].month])
             counts+=1
+    date_list.sort(key=lambda each: each[1])
     return counts
 
 
-# Exercise 6. (8 points)
+# Exercise 6. (8 points) //???
 #
 def month_avg_price(rows):
     """Return a dictionary containing the average price per gallon as a float (values) for each month (keys).
@@ -196,9 +197,8 @@ def highest_thirty(rows):
           (1991-12-21, 1992-01-16, 456),
           (1997-06-01, 1997-06-28, 384) ]
     """
-    #
-    # fill in function body here
-    #
+    daysDelta = []
+    for ()
     return []  # fix this!
 
 
