@@ -174,7 +174,7 @@ def month_avg_price(rows):
             month_avg_dict[month]+=row[-1]
         else:
             dayCountsdict[month] = 1
-            month_avg_dict[month]+=row[-1]
+            month_avg_dict[month] = row[-1]
     for each in month_avg_dict:
         month_avg_dict[each]/=dayCountsdict[each]
     return month_avg_dict  # fix this!
