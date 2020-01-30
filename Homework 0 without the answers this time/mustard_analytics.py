@@ -171,11 +171,11 @@ def month_avg_price(rows):
     for row in rows:
         month = row[0].strftime("%B")
         if month in dayCountsdict:
-            dayCountsdict[month]+=1
-            month_avg_dict[month]+=row[-1]
+            dayCountsdict[month]+=row[-2]
+            month_avg_dict[month]+=row[-1] * row[-2]
         else:
-            dayCountsdict[month] = 1
-            month_avg_dict[month] = row[-1]
+            dayCountsdict[month] = row[-2]
+            month_avg_dict[month] = row[-1] * row[-2]
     for each in month_avg_dict:
         month_avg_dict[each]/=dayCountsdict[each]
     return month_avg_dict  # fix this!
@@ -198,9 +198,29 @@ def highest_thirty(rows):
           (1997-06-01, 1997-06-28, 384) ]
     """
     daysDelta = []
-    for ()
-    return []  # fix this!
-
+    for i in range(len(rows)-1):
+        thisDate = i
+        nextDate = i+1
+        segDayDelta = datetime.timedelta(0)
+        milDelta = 0
+        while nextDate != len(rows)-1:
+            segDayDelta = rows[nextDate][0]-rows[thisDate][0]
+            if segDayDelta.days > 30:
+                nextDate-=1
+                break
+            milDelta = rows[nextDate][1]-rows[thisDate][1]
+            nextDate+=1
+        daysDelta.append(tuple([rows[thisDate][0], rows[nextDate][0], milDelta]))
+    daysDelta.sort(key=lambda each: each[2], reverse=True)
+    results = []
+    results.append(daysDelta[0])
+    for each in daysDelta[1:]:
+        for result in results:
+            if (each[0] - result[0]).days < 30 or (each[0] - result[1]).days < 30:
+                break
+            else:
+                results.append(each)
+    return results[:3]
 
 # The main() function below will be executed when your program is run.
 # Note that Python does not require a main() function, but it is
