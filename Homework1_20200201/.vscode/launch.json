@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/solver.py",
             "console": "integratedTerminal",
-            "args": ["greedy-manhat", "312458607", "012345678"]
+            "args": ["ucost", "123456780", "012345678"]
         }
     ]
 }
