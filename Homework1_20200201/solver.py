@@ -38,24 +38,16 @@ def bfs(start, goal):
 def ucost(start, goal):
     def add_task(task, path):
         priority = len(path)
-        if task in entry_finder:
-            remove_task(task)
         count = next(counter)
         entry = [priority, count, task]
         entry_finder[task] = path
         heappush(frontier, entry)
 
-    def remove_task(task):
-        entry = entry_finder.pop(task)
-        entry[-1] = REMOVED
-
     def pop_task():
         while frontier:
             priority, count, task = heappop(frontier)
-            if task is not REMOVED:
-                p = entry_finder[task]
-                del entry_finder[task]
-                return [task, p]
+            p = entry_finder[task]
+            return [task, p]
         raise KeyError('pop from an empty priority queue')
     global FRONTIER
     global EXPANDED
@@ -90,21 +82,35 @@ def ucost(start, goal):
 
 
 def greedyCount(start, goal):
+    def add_task(task, path, priority):
+        count = next(counter)
+        entry = [priority, count, task]
+        entry_finder[task] = [path, priority]
+        heappush(frontier, entry)
+
+    def pop_task():
+        while frontier:
+            priority, count, task = heappop(frontier)
+            p = entry_finder[task][0]
+            return [task, p]
+        raise KeyError('pop from an empty priority queue')
     global FRONTIER
     global EXPANDED
+    counter = itertools.count()
+    REMOVED = '<removed-task>'
     goalstr = str(goal)
-    frontier = OrderedDict()
+    frontier = []
+    entry_finder = {}
     explored = set()
-    frontier[str(start)] = [[tuple(["start", start])], misplaced_count(start, goal)]
+    add_task(str(start), [tuple(["start", start])], misplaced_count(start, goal))
     while not len(frontier) == 0:
-        frontier = OrderedDict(
-            sorted(frontier.items(), key=lambda each: each[1][1]))
-        node, pair = frontier.popitem(last=False)
-        path = pair[0]
+        node, path = pop_task()
         explored.add(node)
         if node == goalstr:
             return path
         EXPANDED += 1
+        if EXPANDED > 100000:
+            return None
         for each in EightPuzzleBoard(node).successors().items():
             if each[1] is None:
                 continue
@@ -112,11 +118,11 @@ def greedyCount(start, goal):
             newPath = path[:]
             newPath.append(each)
             misplaced = misplaced_count(each[1], goal)
-            if newnode not in frontier and newnode not in explored:
-                frontier[newnode] = [newPath, misplaced]
+            if newnode not in entry_finder and newnode not in explored:
+                add_task(newnode, newPath, misplaced)
                 FRONTIER += 1
-            elif newnode in frontier and frontier[newnode][1] > misplaced:
-                frontier[newnode] = [newPath, misplaced]
+            elif newnode in entry_finder and entry_finder[newnode][-1] > misplaced:
+                add_task(newnode, newPath, misplaced)
                 FRONTIER += 1
     return None
 
@@ -159,7 +165,8 @@ def astarCount(start, goal):
     goalstr = str(goal)
     frontier = OrderedDict()
     explored = set()
-    frontier[str(start)] = [[tuple(["start", start])], misplaced_count(start, goal)]
+    frontier[str(start)] = [[tuple(["start", start])],
+                            misplaced_count(start, goal)]
     while not len(frontier) == 0:
         frontier = OrderedDict(
             sorted(frontier.items(), key=lambda each: each[1][1]))

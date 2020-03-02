@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: Computer File",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/solver.py",
-            "console": "integratedTerminal",
-            "args": ["greedy-count", "123456780", "012345678"]
+            "program": "${workspaceFolder}/connect4.py",
+            "args": ["h", "c"],
+            "console": "integratedTerminal"
         }
     ]
 }
